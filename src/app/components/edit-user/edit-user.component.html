@@ -32,21 +32,46 @@
   
     </div>
 </div> -->
+<h2 mat-dialog-title>Edit User {{user.userName}}</h2>
 
-<h2 mat-dialog-title>Favorite {{data.userName}}</h2>
+<mat-divider></mat-divider>
+
 <mat-dialog-content>
-  <div>
-      Name:
-      <input [(ngModel)] = "data.userName" placeholder="Name" class="form-control"/>
-  </div>
-  <div>
-      Email:
-      <input [(ngModel)] = "data.email" placeholder="Email" class="form-control"/>
-  </div>
-  <div>
-      Password:
-      <input [(ngModel)] = "data.password" placeholder="Password" class="form-control"/>
-  </div>
+  <form myForm>
+    <p>
+      <mat-form-field>
+        <input placeholder="" matInput formControlName="id" hidden/>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <input placeholder="Name" matInput formControlName="name" />
+        <mat-icon matPrefix>person</mat-icon>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <input placeholder="Email" matInput formControlName="email" />
+        <mat-icon matPrefix>drafts</mat-icon>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <input placeholder="Password" matInput formControlName="password" />
+        <mat-icon matPrefix>lock</mat-icon>
+      </mat-form-field>
+    </p>
+
+    <mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close color="primary" *ngIf="user.id">UPDATE</button>
+      <button mat-raised-button mat-dialog-close color="accent" *ngIf="!user.id">ADD</button>
+      <button mat-raised-button mat-dialog-close color="warn" *ngIf="user.id">DELETE</button>
+      <button mat-raised-button mat-dialog-close color="warn">CLOSE</button>
+    </mat-dialog-actions>
+  </form>
 
   <!-- <button (click)="updateUser(user);" *ngIf="user.id" class="btn btn-primary">Update</button>
   <button (click)="createUser(user);" *ngIf="!user.id" class="btn btn-primary">Add</button>

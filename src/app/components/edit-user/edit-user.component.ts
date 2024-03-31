@@ -1,15 +1,10 @@
-import { Component, Input, Inject } from '@angular/core';
+import { Component, Input, Inject, OnInit } from '@angular/core';
 import { PagedResultDto } from 'src/app/dtos/PagedResultDto';
 import { ResponseModel } from 'src/app/dtos/ResponseModel';
 import { UserDto } from 'src/app/dtos/UserDto';
 import { UserService } from 'src/app/services/user-service';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogTitle,
-  MatDialogContent,
-} from '@angular/material/dialog';
-
-declare var window: any;
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-user',
@@ -17,12 +12,32 @@ declare var window: any;
   styleUrls: ['./edit-user.component.css']
 })
 
-export class EditUserComponent{
+export class EditUserComponent implements OnInit{
   // @Input() user? : UserDto;
   // @Output() usersUpdated = new EventEmitter<UserDto[]>();
- 
+  user : UserDto;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: UserDto, private builder: FormBuilder) {
+    this.user = this.data;
+  }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: UserDto) {}
+  ngOnInit(): void {
+    this.setPopUpData(this.user);
+  }
+
+  setPopUpData(data: UserDto){
+    this.myForm.setValue({
+      name: this.data.userName,
+      email: this.data.email,
+      password: this.data.password,
+    });
+  }
+  myForm = this.builder.group(
+    {
+      name: this.builder.control(''),
+      email: this.builder.control(''),
+      password: this.builder.control(''),
+    }
+  );
   // updateUser(user: UserDto) {
   //   this.userService
   //   .updateUser(user)

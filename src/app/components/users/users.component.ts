@@ -36,7 +36,7 @@ export class UsersComponent implements AfterViewInit{
     openDialog() {
       this.dialog.open(EditUserComponent, {
         data: {
-          UserDto: this.editUser,
+          UserDto: this.userToEdit,
         }
       });
     }
@@ -65,10 +65,6 @@ export class UsersComponent implements AfterViewInit{
     }
   }
 
-  openModal(){
-    this.formModal.show();
-  }
-
   hideModal(){
     this.formModal.hide();
   }
@@ -82,7 +78,6 @@ export class UsersComponent implements AfterViewInit{
   }
 
   editUser(user: UserDto) {
-    debugger
     this.userToEdit = user;
   }
 }
