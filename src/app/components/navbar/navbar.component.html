@@ -1,0 +1,14 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <button mat-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-drawer-container autosize>
+    <mat-drawer #drawer mode="side">
+        <a mat-button color="primary" routerLink="dashboard">Dashboard</a>
+        <a mat-button color="primary" routerLink="users">Users</a>
+        <a mat-button color="primary" routerLink="roles">Roles</a>
+    </mat-drawer>
+    <mat-drawer-content></mat-drawer-content>
+</mat-drawer-container>

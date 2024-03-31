@@ -6,11 +6,3 @@ mat-drawer{
     width: 200px;
     background-color: white;
 }
-
-mat-drawer-content{
-    padding: 1%;
-}
-
-.example-spacer {
-    flex: 1 1 auto;
-  }
