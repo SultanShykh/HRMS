@@ -16,7 +16,7 @@ declare var window: any;
 })
 
 export class UsersComponent implements AfterViewInit{
-  title = 'HRMS';
+  title = '';
   users: UserDto[] = [];
   userToEdit? : UserDto;
   formModal: any;
@@ -33,22 +33,32 @@ export class UsersComponent implements AfterViewInit{
       this.dataSource = new MatTableDataSource(this.users);
     }
    
-    openDialog() {
-      this.dialog.open(EditUserComponent, {
-        data: {
-          UserDto: this.userToEdit,
-        }
-      });
-    }
+  openDialog() {
+    var _popUp = this.dialog.open(EditUserComponent, {
+      enterAnimationDuration: '10ms',
+      exitAnimationDuration: '10ms',
+      data: {
+        title: this.title,
+        userDto: this.userToEdit,
+      }
+    });
+    _popUp.afterClosed().subscribe(item => {
+      this.loadUsers();
+    });
+  }
 
-  ngOnInit() : void {
-     this.userService
+  loadUsers(){
+    this.userService
      .getUsers()
      .subscribe(result => {
       this.users = result.items;
       // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.users);
      });
+  }
+
+  ngOnInit() : void {
+     this.loadUsers();
   }  
 
   ngAfterViewInit() {
@@ -70,6 +80,7 @@ export class UsersComponent implements AfterViewInit{
   }
 
   initNewUser() {
+    this.title = 'Add User';
     this.userToEdit = new UserDto();
   }
 
@@ -78,6 +89,7 @@ export class UsersComponent implements AfterViewInit{
   }
 
   editUser(user: UserDto) {
+    this.title = 'Edit User';
     this.userToEdit = user;
   }
 }

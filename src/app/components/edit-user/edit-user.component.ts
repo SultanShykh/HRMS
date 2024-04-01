@@ -3,7 +3,7 @@ import { PagedResultDto } from 'src/app/dtos/PagedResultDto';
 import { ResponseModel } from 'src/app/dtos/ResponseModel';
 import { UserDto } from 'src/app/dtos/UserDto';
 import { UserService } from 'src/app/services/user-service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -16,35 +16,64 @@ export class EditUserComponent implements OnInit{
   // @Input() user? : UserDto;
   // @Output() usersUpdated = new EventEmitter<UserDto[]>();
   user : UserDto;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: UserDto, private builder: FormBuilder) {
-    this.user = this.data;
+  title: '';
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
+    private builder: FormBuilder,
+    private ref: MatDialogRef<EditUserComponent>,
+    private userService: UserService) {
+      this.user = this.data.userDto;
+      this.title = this.data.title;
   }
 
   ngOnInit(): void {
-    this.setPopUpData(this.user);
+    //this.setPopUpData(this.user);
   }
 
-  setPopUpData(data: UserDto){
-    this.myForm.setValue({
-      name: this.data.userName,
-      email: this.data.email,
-      password: this.data.password,
-    });
-  }
-  myForm = this.builder.group(
-    {
-      name: this.builder.control(''),
-      email: this.builder.control(''),
-      password: this.builder.control(''),
-    }
-  );
-  // updateUser(user: UserDto) {
-  //   this.userService
-  //   .updateUser(user)
-  //   .subscribe((users: ResponseModel) => {
-      
+  // setPopUpData(data: UserDto){
+  //   this.myForm.setValue({
+  //     name: this.data.userName,
+  //     email: this.data.email,
+  //     password: this.data.password,
   //   });
   // }
+  myForm = this.builder.group({
+      id: this.builder.control(''),      
+      userName: this.builder.control(''),
+      email: this.builder.control(''),
+      password: this.builder.control(''),
+      role: this.builder.control(''),
+    }
+  );
+
+  UpdateUser(user: UserDto) {
+    this.userService
+    .updateUser(user)
+    .subscribe((users: ResponseModel) => {
+      
+    });
+  }
+
+  UpdatedFields(data: any): UserDto {
+    var userDto = new UserDto();
+
+    userDto.id = data.id;
+    userDto.email = data.email;
+    userDto.userName = data.userName;
+    userDto.password = data.password;
+    userDto.role = data.role;
+
+    return userDto;
+  }
+
+  SaveUser(){
+    var data = this.UpdatedFields(this.myForm.value);
+    this.userService.createUser(data).subscribe(res => {
+      this.closeModal();
+    });
+  }
+
+
+  
 
   // deleteUser(user: UserDto) {
   //   this.userService
@@ -64,7 +93,7 @@ export class EditUserComponent implements OnInit{
   //   );
   // }
 
-  // hideModal(){
-  //   this.formModal.hide();
-  // }
+  closeModal(){
+    this.ref.close();
+  }
 }

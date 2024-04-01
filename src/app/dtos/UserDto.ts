@@ -3,5 +3,5 @@ export class UserDto{
     userName = "";
     email = "";
     password = "";
-    rollName = "";
+    role = "";
 }
